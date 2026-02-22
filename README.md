@@ -187,3 +187,71 @@ Contributions are welcome! Please fork the repository and submit a pull request 
 ## License
 
 This project is licensed under the MIT License.
+
+## Deployment
+
+The AI Career Platform can be deployed to cloud platforms for public access. The application consists of a React.js frontend and a Node.js/Express backend with MongoDB Atlas database integration.
+
+### Prerequisites for Deployment
+
+- Node.js (v14 or higher)
+- npm (v6 or higher)
+- Heroku CLI (for backend deployment)
+- Vercel CLI or Netlify CLI (for frontend deployment)
+
+### Deployment Options
+
+We provide two deployment scripts to automate the process:
+
+#### Windows Deployment
+Run the deployment script:
+```bash
+deploy.bat
+```
+
+#### Unix/Linux/macOS Deployment
+Run the deployment script:
+```bash
+chmod +x deploy.sh
+./deploy.sh
+```
+
+### Manual Deployment Steps
+
+#### Backend Deployment (to Heroku)
+
+1. Install Heroku CLI from https://devcenter.heroku.com/articles/heroku-cli
+2. Login to Heroku: `heroku login`
+3. Navigate to the backend directory: `cd backend`
+4. Create a new Heroku app: `heroku create your-app-name-backend`
+5. Set environment variables:
+   ```bash
+   heroku config:set MONGODB_URI="mongodb+srv://aiuser:Manicharan%4012@cluster0.7pa4of5.mongodb.net/ai-career-platform?retryWrites=true&w=majority"
+   heroku config:set JWT_SECRET="your_secure_jwt_secret_here"
+   heroku config:set GEMINI_API_KEY="AIzaSyBcZLRzxeeYffXS5gonBHz3J-SodNyrMpQ"
+   ```
+6. Deploy the app: `git push heroku main`
+
+#### Frontend Deployment (to Vercel or Netlify)
+
+1. **Using Vercel:**
+   - Install Vercel CLI: `npm install -g vercel`
+   - Login to Vercel: `vercel login`
+   - Navigate to frontend directory: `cd frontend`
+   - Deploy with environment variable: `vercel --prod --env REACT_APP_API_BASE_URL=YOUR_BACKEND_URL`
+
+2. **Using Netlify:**
+   - Install Netlify CLI: `npm install -g netlify-cli`
+   - Login to Netlify: `netlify login`
+   - Build the project: `npm run build`
+   - Deploy: `netlify deploy --dir=build --prod`
+
+### Environment Variables
+
+#### Backend (Heroku)
+- `MONGODB_URI`: MongoDB Atlas connection string
+- `JWT_SECRET`: Secret for JWT token generation
+- `GEMINI_API_KEY`: Google Gemini API key
+
+#### Frontend (Vercel/Netlify)
+- `REACT_APP_API_BASE_URL`: URL of the deployed backend API
