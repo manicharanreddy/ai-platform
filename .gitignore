@@ -20,8 +20,13 @@ dist/
 # Build output
 build/
 
-# Environment files
-.env*
+# Environment files (excluding .env which is needed for deployment)
+.env.local
+.env.development
+.env.test
+.env.production
+.env.*
+!.env
 
 # IDE files
 .vscode/
@@ -48,6 +53,9 @@ temp/
 # Database files
 *.db
 *.sqlite
+
+# Uploads directory (user files)
+backend/uploads/
 
 # Backup files
 *.bak
