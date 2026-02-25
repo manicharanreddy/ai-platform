@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import config from '../config/apiConfig';
 import '../styles/globals.css';
 import './Auth.css';
 
@@ -57,7 +58,7 @@ const Register = ({ updateUser }) => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const response = await fetch(`${config.baseURL}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
