@@ -22,7 +22,7 @@ const PortfolioGenerator = ({ resumeData: propResumeData }) => {
       formData.append('resume', selectedFile);
       
       // Upload the file to get parsed content
-      fetch('http://localhost:5000/api/resume/upload', {
+      fetch(`${config.baseURL}/resume/upload`, {
         method: 'POST',
         body: formData,
       })
@@ -66,7 +66,7 @@ const PortfolioGenerator = ({ resumeData: propResumeData }) => {
         formData.append('resume', selectedFile);
         
         // Upload the file to get parsed content
-        fetch('http://localhost:5000/api/resume/upload', {
+        fetch(`${config.baseURL}/resume/upload`, {
           method: 'POST',
           body: formData,
         })

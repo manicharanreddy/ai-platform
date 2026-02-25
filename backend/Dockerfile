@@ -1,12 +1,18 @@
-FROM node:18-alpine
+FROM node:18-bullseye
 
-# Install Python and other build dependencies
-RUN apk add --update \
-    python3 \
-    py3-pip \
+# Install Python 3.9 and other build dependencies (compatible with PyTorch)
+RUN apt-get update && apt-get install -y \
+    python3.9 \
+    python3-pip \
     python3-dev \
-    build-base \
-    bash
+    build-essential \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create symbolic links for python3 and pip3
+RUN ln -sf /usr/bin/python3.9 /usr/bin/python3 && \
+    ln -sf /usr/bin/python3.9 /usr/bin/python && \
+    ln -sf /usr/bin/pip3 /usr/bin/pip
 
 WORKDIR /app
 
@@ -17,9 +23,16 @@ COPY python_requirements.txt ./
 # Install Node.js dependencies
 RUN npm install
 
-# Install Python dependencies using --break-system-packages flag
-RUN pip3 install --break-system-packages --upgrade pip
-RUN pip3 install --break-system-packages -r python_requirements.txt
+# Upgrade pip and install Python dependencies with compatibility flags
+RUN pip3 install --break-system-packages --upgrade pip setuptools wheel
+
+# Install PyTorch first to handle compatibility
+RUN pip3 install --break-system-packages torch==2.0.1 torchvision==0.15.2 --index-url https://download.pytorch.org/whl/cpu
+
+# Install remaining Python dependencies with error handling
+RUN pip3 install --break-system-packages --no-cache-dir -r python_requirements.txt || \
+    (echo "Retrying with --only-binary=:all: flag" && \
+     pip3 install --break-system-packages --no-cache-dir --only-binary=:all: -r python_requirements.txt)
 
 # Download NLTK data and spaCy model
 RUN python3 -c "import nltk; nltk.download('punkt'); nltk.download('stopwords'); nltk.download('wordnet'); nltk.download('omw-1.4')"
