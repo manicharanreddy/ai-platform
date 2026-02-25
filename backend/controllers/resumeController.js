@@ -47,8 +47,13 @@ const uploadResume = async (req, res) => {
     let parsedData;
     
     try {
+      console.log('Starting Python resume parsing for file:', req.file.path);
+      console.log('File type detected:', fileType);
+      
       // Try to call Python script to parse resume
       parsedData = await parseResume(req.file.path, fileType);
+      
+      console.log('Python script result:', parsedData);
       
       if (parsedData && parsedData.error) {
         console.error('Python script error:', parsedData.error);
@@ -57,6 +62,7 @@ const uploadResume = async (req, res) => {
     } catch (pythonError) {
       console.error('Python environment error:', pythonError.message);
       console.error('Full error details:', pythonError);
+      console.error('File path attempted:', req.file.path);
       return res.status(500).json({ error: 'Python processing error: ' + pythonError.message });
     }
     

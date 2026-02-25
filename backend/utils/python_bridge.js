@@ -6,6 +6,11 @@ const getPythonPath = () => {
   // Check if we're in a production environment
   if (process.env.NODE_ENV === 'production' || process.env.RENDER) {
     // In production on Render, use system Python
+    // First try the standard path
+    if (process.env.RENDER_EXTERNAL_URL) {
+      // On Render, use python3
+      return 'python3';
+    }
     return '/usr/bin/python3';
   }
   
@@ -65,7 +70,7 @@ const parseResume = (filePath, fileType) => {
       setTimeout(() => {
         pythonProcess.kill();
         reject(new Error('Python process timed out')); 
-      }, 30000); // 30 second timeout
+      }, 60000); // 60 second timeout
       
     } catch (error) {
       reject(new Error(`Error setting up Python process: ${error.message}`));
@@ -121,7 +126,7 @@ const matchJob = (resumeSkills, jobTitle) => {
       setTimeout(() => {
         pythonProcess.kill();
         reject(new Error('Python process for job matching timed out')); 
-      }, 30000); // 30 second timeout
+      }, 60000); // 60 second timeout
       
     } catch (error) {
       reject(new Error(`Error setting up Python process for job matching: ${error.message}`));
@@ -177,7 +182,7 @@ const getJobRecommendations = (resumeSkills) => {
       setTimeout(() => {
         pythonProcess.kill();
         reject(new Error('Python process for job recommendations timed out')); 
-      }, 30000); // 30 second timeout
+      }, 60000); // 60 second timeout
       
     } catch (error) {
       reject(new Error(`Error setting up Python process for job recommendations: ${error.message}`));
