@@ -23,16 +23,16 @@ COPY python_requirements.txt ./
 # Install Node.js dependencies
 RUN npm install
 
-# Upgrade pip and install Python dependencies with compatibility flags
-RUN pip3 install --break-system-packages --upgrade pip setuptools wheel
+# Upgrade pip and install Python dependencies
+RUN pip3 install --upgrade pip setuptools wheel
 
 # Install PyTorch first to handle compatibility
-RUN pip3 install --break-system-packages torch==2.0.1 torchvision==0.15.2 --index-url https://download.pytorch.org/whl/cpu
+RUN pip3 install torch==2.0.1 torchvision==0.15.2 --index-url https://download.pytorch.org/whl/cpu
 
 # Install remaining Python dependencies with error handling
-RUN pip3 install --break-system-packages --no-cache-dir -r python_requirements.txt || \
+RUN pip3 install --no-cache-dir -r python_requirements.txt || \
     (echo "Retrying with --only-binary=:all: flag" && \
-     pip3 install --break-system-packages --no-cache-dir --only-binary=:all: -r python_requirements.txt)
+     pip3 install --no-cache-dir --only-binary=:all: -r python_requirements.txt)
 
 # Download NLTK data and spaCy model
 RUN python3 -c "import nltk; nltk.download('punkt'); nltk.download('stopwords'); nltk.download('wordnet'); nltk.download('omw-1.4')"
