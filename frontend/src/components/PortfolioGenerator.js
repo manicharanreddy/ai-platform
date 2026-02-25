@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { generatePortfolio } from '../services/api';
+import config from '../config/apiConfig';
 import './PortfolioGenerator.css';
 
 const PortfolioGenerator = ({ resumeData: propResumeData }) => {
