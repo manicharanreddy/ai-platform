@@ -24,23 +24,19 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 // Middleware
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://ai-platform-bi5c.vercel.app');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  res.header('Access-Control-Allow-Credentials', 'true');
+  // Set CORS headers to allow all origins during production
+  res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all origins
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
   
   if (req.method === 'OPTIONS') {
-    res.sendStatus(200);
+    res.status(200).end();
   } else {
     next();
   }
 });
 
-app.use(cors({
-  origin: ['https://ai-platform-bi5c.vercel.app', 'http://localhost:3000'],
-  credentials: true,
-  optionsSuccessStatus: 200
-}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
