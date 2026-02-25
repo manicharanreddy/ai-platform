@@ -17,9 +17,9 @@ COPY python_requirements.txt ./
 # Install Node.js dependencies
 RUN npm install
 
-# Install Python dependencies
-RUN pip3 install --upgrade pip
-RUN pip3 install -r python_requirements.txt
+# Install Python dependencies using --break-system-packages flag
+RUN pip3 install --break-system-packages --upgrade pip
+RUN pip3 install --break-system-packages -r python_requirements.txt
 
 # Download NLTK data and spaCy model
 RUN python3 -c "import nltk; nltk.download('punkt'); nltk.download('stopwords'); nltk.download('wordnet'); nltk.download('omw-1.4')"
