@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { generatePortfolio } from '../services/api';
-import config from '../config/apiConfig';
+import { uploadResume, generatePortfolio } from '../services/api';
 import './PortfolioGenerator.css';
 
 const PortfolioGenerator = ({ resumeData: propResumeData }) => {
@@ -23,12 +22,9 @@ const PortfolioGenerator = ({ resumeData: propResumeData }) => {
       formData.append('resume', selectedFile);
       
       // Upload the file to get parsed content
-      fetch(`${config.baseURL}/resume/upload`, {
-        method: 'POST',
-        body: formData,
-      })
-      .then(response => response.json())
-      .then(data => {
+      uploadResume(formData)
+      .then(response => {
+        const data = response.data;
         if (data.extractedInfo) {
           setExtractedData(data.extractedInfo);
           setIsFileUploaded(true);
@@ -67,12 +63,9 @@ const PortfolioGenerator = ({ resumeData: propResumeData }) => {
         formData.append('resume', selectedFile);
         
         // Upload the file to get parsed content
-        fetch(`${config.baseURL}/resume/upload`, {
-          method: 'POST',
-          body: formData,
-        })
-        .then(response => response.json())
-        .then(data => {
+        uploadResume(formData)
+        .then(response => {
+          const data = response.data;
           if (data.extractedInfo) {
             setExtractedData(data.extractedInfo);
             setIsFileUploaded(true);
