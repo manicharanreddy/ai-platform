@@ -38,7 +38,7 @@ const AIMentorChat = ({ resumeData }) => {
         }
       ]);
     }
-  }, []);
+  }, [resumeData]);
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
