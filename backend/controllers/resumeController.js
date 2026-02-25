@@ -24,17 +24,19 @@ const mockParseResume = (filePath, fileType) => {
 
 // Handle resume upload and processing
 const uploadResume = async (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ error: 'No file uploaded' });
-  }
-  
   try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+    
     // Determine file type
     let fileType = 'text';
     if (req.file.mimetype === 'application/pdf') {
       fileType = 'pdf';
     } else if (req.file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
       fileType = 'docx';
+    } else if (req.file.mimetype === 'application/msword') {
+      fileType = 'doc';
     }
     
     // Check if the file exists before attempting to process
@@ -48,7 +50,7 @@ const uploadResume = async (req, res) => {
       // Try to call Python script to parse resume
       parsedData = await parseResume(req.file.path, fileType);
       
-      if (parsedData.error) {
+      if (parsedData && parsedData.error) {
         console.error('Python script error:', parsedData.error);
         // Use mock parser as fallback
         parsedData = await mockParseResume(req.file.path, fileType);
@@ -56,6 +58,11 @@ const uploadResume = async (req, res) => {
     } catch (pythonError) {
       console.error('Python environment error:', pythonError.message);
       // Fallback to mock parser if Python environment is not available
+      parsedData = await mockParseResume(req.file.path, fileType);
+    }
+    
+    // Ensure parsedData is not null or undefined
+    if (!parsedData) {
       parsedData = await mockParseResume(req.file.path, fileType);
     }
     

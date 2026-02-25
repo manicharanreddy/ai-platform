@@ -49,13 +49,22 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Ensure uploads directory exists
 const uploadDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
+try {
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+    console.log('Uploads directory created successfully');
+  }
+} catch (mkdirErr) {
+  console.error('Error creating uploads directory:', mkdirErr);
 }
 
 // Routes
 app.get('/', (req, res) => {
   res.json({ message: 'AI Career Platform API' });
+});
+
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK', timestamp: new Date().toISOString(), uptime: process.uptime() });
 });
 
 // API routes
