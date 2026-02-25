@@ -107,7 +107,7 @@ const BiasChecker = () => {
         formData.append('resume', file);
         
         // First upload the file to get parsed content
-        const uploadResponse = await fetch('http://localhost:5000/api/resume/upload', {
+        const uploadResponse = await fetch(`${process.env.REACT_APP_API_BASE_URL}/resume/upload`, {
           method: 'POST',
           body: formData,
         });
