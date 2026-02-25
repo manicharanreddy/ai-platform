@@ -57,6 +57,7 @@ const uploadResume = async (req, res) => {
       }
     } catch (pythonError) {
       console.error('Python environment error:', pythonError.message);
+      console.error('Full error details:', pythonError);
       // Fallback to mock parser if Python environment is not available
       parsedData = await mockParseResume(req.file.path, fileType);
     }
