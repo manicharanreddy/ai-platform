@@ -216,6 +216,23 @@ chmod +x deploy.sh
 ./deploy.sh
 ```
 
+### Render Deployment (Recommended for Full Python Functionality)
+
+For deploying the backend with full Python AI functionality, we recommend using Render. The application has been configured to work properly with Render's infrastructure.
+
+#### Prerequisites for Render Deployment
+
+- A GitHub, GitLab, or Bitbucket repository containing your code
+- MongoDB Atlas account for database hosting
+- Render account at https://render.com
+
+#### Deployment Steps
+
+1. Push your code to a Git repository (GitHub, GitLab, or Bitbucket)
+2. Follow the detailed instructions in the [RENDER_SETUP.md](RENDER_SETUP.md) file to configure your Render service
+3. The Dockerfile in the `/backend` directory ensures Python and all dependencies are properly installed
+4. The build process will automatically install Python packages and download required NLTK/spaCy models
+
 ### Manual Deployment Steps
 
 #### Backend Deployment (to Heroku)
