@@ -5,8 +5,8 @@ const path = require('path');
 const getPythonPath = () => {
   // Check if we're in a production environment
   if (process.env.NODE_ENV === 'production' || process.env.RENDER) {
-    // In production, use system Python
-    return 'python3';
+    // In production on Render, use system Python
+    return '/usr/bin/python3';
   }
   
   const isWindows = process.platform === 'win32';
@@ -19,21 +19,10 @@ const getPythonPath = () => {
 
 // Function to call Python script for resume parsing
 const parseResume = (filePath, fileType) => {
-  return new Promise(async (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     try {
       // Path to Python executable in virtual environment
       const pythonPath = getPythonPath();
-      
-      // Check if Python is available
-      const { exec } = require('child_process');
-      exec('python3 --version', (error, stdout, stderr) => {
-        if (error) {
-          console.log('Python not available, using mock parser');
-          // Resolve with a promise that returns mock data
-          resolve(mockParseResume(filePath, fileType));
-          return;
-        }
-      });
       
       // Path to Python script
       const scriptPath = path.join(__dirname, 'ai_career_engine.py');
@@ -41,8 +30,7 @@ const parseResume = (filePath, fileType) => {
       // Check if the Python script exists before spawning
       const fs = require('fs');
       if (!fs.existsSync(scriptPath)) {
-        console.log('Python script not found, using mock parser');
-        resolve(mockParseResume(filePath, fileType));
+        reject(new Error(`Python script not found at: ${scriptPath}`));
         return;
       }
       
@@ -62,15 +50,13 @@ const parseResume = (filePath, fileType) => {
       
       pythonProcess.on('close', (code) => {
         if (code !== 0) {
-          console.log(`Python script exited with code ${code}: ${stderrData}`);
-          resolve(mockParseResume(filePath, fileType)); // Use mock as fallback
+          reject(new Error(`Python script exited with code ${code}: ${stderrData}`));
         } else {
           try {
             const result = JSON.parse(stdoutData);
             resolve(result);
           } catch (parseError) {
-            console.log(`Failed to parse Python output: ${parseError.message}`);
-            resolve(mockParseResume(filePath, fileType)); // Use mock as fallback
+            reject(new Error(`Failed to parse Python output: ${parseError.message}`));
           }
         }
       });
@@ -78,32 +64,21 @@ const parseResume = (filePath, fileType) => {
       // Add timeout to prevent hanging processes
       setTimeout(() => {
         pythonProcess.kill();
-        resolve(mockParseResume(filePath, fileType));
+        reject(new Error('Python process timed out')); 
       }, 30000); // 30 second timeout
       
     } catch (error) {
-      console.log('Error setting up Python process:', error.message);
-      resolve(mockParseResume(filePath, fileType)); // Use mock as fallback
+      reject(new Error(`Error setting up Python process: ${error.message}`));
     }
   });
 };
 
 // Function to call Python script for job matching
 const matchJob = (resumeSkills, jobTitle) => {
-  return new Promise(async (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     try {
       // Path to Python executable in virtual environment
       const pythonPath = getPythonPath();
-      
-      // Check if Python is available
-      const { exec } = require('child_process');
-      exec('python3 --version', (error, stdout, stderr) => {
-        if (error) {
-          console.log('Python not available for job matching, using mock result');
-          resolve(mockJobResult(resumeSkills, jobTitle));
-          return;
-        }
-      });
       
       // Path to Python script
       const scriptPath = path.join(__dirname, 'ai_career_engine.py');
@@ -111,8 +86,7 @@ const matchJob = (resumeSkills, jobTitle) => {
       // Check if the Python script exists before spawning
       const fs = require('fs');
       if (!fs.existsSync(scriptPath)) {
-        console.log('Python script not found for job matching, using mock result');
-        resolve(mockJobResult(resumeSkills, jobTitle));
+        reject(new Error(`Python script not found for job matching at: ${scriptPath}`));
         return;
       }
       
@@ -132,15 +106,13 @@ const matchJob = (resumeSkills, jobTitle) => {
       
       pythonProcess.on('close', (code) => {
         if (code !== 0) {
-          console.log(`Python script exited with code ${code} for job matching: ${stderrData}`);
-          resolve(mockJobResult(resumeSkills, jobTitle)); // Use mock as fallback
+          reject(new Error(`Python script exited with code ${code} for job matching: ${stderrData}`));
         } else {
           try {
             const result = JSON.parse(stdoutData);
             resolve(result);
           } catch (parseError) {
-            console.log(`Failed to parse Python output for job matching: ${parseError.message}`);
-            resolve(mockJobResult(resumeSkills, jobTitle)); // Use mock as fallback
+            reject(new Error(`Failed to parse Python output for job matching: ${parseError.message}`));
           }
         }
       });
@@ -148,32 +120,21 @@ const matchJob = (resumeSkills, jobTitle) => {
       // Add timeout to prevent hanging processes
       setTimeout(() => {
         pythonProcess.kill();
-        resolve(mockJobResult(resumeSkills, jobTitle));
+        reject(new Error('Python process for job matching timed out')); 
       }, 30000); // 30 second timeout
       
     } catch (error) {
-      console.log('Error setting up Python process for job matching:', error.message);
-      resolve(mockJobResult(resumeSkills, jobTitle)); // Use mock as fallback
+      reject(new Error(`Error setting up Python process for job matching: ${error.message}`));
     }
   });
 };
 
 // Function to call Python script for job recommendations
 const getJobRecommendations = (resumeSkills) => {
-  return new Promise(async (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     try {
       // Path to Python executable in virtual environment
       const pythonPath = getPythonPath();
-      
-      // Check if Python is available
-      const { exec } = require('child_process');
-      exec('python3 --version', (error, stdout, stderr) => {
-        if (error) {
-          console.log('Python not available for job recommendations, using mock result');
-          resolve(mockRecommendations(resumeSkills));
-          return;
-        }
-      });
       
       // Path to Python script
       const scriptPath = path.join(__dirname, 'ai_career_engine.py');
@@ -181,8 +142,7 @@ const getJobRecommendations = (resumeSkills) => {
       // Check if the Python script exists before spawning
       const fs = require('fs');
       if (!fs.existsSync(scriptPath)) {
-        console.log('Python script not found for job recommendations, using mock result');
-        resolve(mockRecommendations(resumeSkills));
+        reject(new Error(`Python script not found for job recommendations at: ${scriptPath}`));
         return;
       }
       
@@ -202,15 +162,13 @@ const getJobRecommendations = (resumeSkills) => {
       
       pythonProcess.on('close', (code) => {
         if (code !== 0) {
-          console.log(`Python script exited with code ${code} for job recommendations: ${stderrData}`);
-          resolve(mockRecommendations(resumeSkills)); // Use mock as fallback
+          reject(new Error(`Python script exited with code ${code} for job recommendations: ${stderrData}`));
         } else {
           try {
             const result = JSON.parse(stdoutData);
             resolve(result);
           } catch (parseError) {
-            console.log(`Failed to parse Python output for job recommendations: ${parseError.message}`);
-            resolve(mockRecommendations(resumeSkills)); // Use mock as fallback
+            reject(new Error(`Failed to parse Python output for job recommendations: ${parseError.message}`));
           }
         }
       });
@@ -218,12 +176,11 @@ const getJobRecommendations = (resumeSkills) => {
       // Add timeout to prevent hanging processes
       setTimeout(() => {
         pythonProcess.kill();
-        resolve(mockRecommendations(resumeSkills));
+        reject(new Error('Python process for job recommendations timed out')); 
       }, 30000); // 30 second timeout
       
     } catch (error) {
-      console.log('Error setting up Python process for job recommendations:', error.message);
-      resolve(mockRecommendations(resumeSkills)); // Use mock as fallback
+      reject(new Error(`Error setting up Python process for job recommendations: ${error.message}`));
     }
   });
 };
@@ -380,34 +337,7 @@ const getAIMentorResponse = (userQuery, resumeData) => {
   });
 };
 
-// Helper function for mock job matching result
-const mockJobResult = (resumeSkills, jobTitle) => {
-  const matchingSkills = resumeSkills.filter(skill => 
-    jobTitle.toLowerCase().includes(skill.toLowerCase()) || 
-    Math.random() > 0.5
-  );
-  
-  return {
-    job_title: jobTitle,
-    company: 'Sample Company',
-    location: 'Remote',
-    url: '',
-    match_score: Math.min(100, Math.round((matchingSkills.length / resumeSkills.length) * 100)),
-    matching_skills: matchingSkills,
-    missing_skills: resumeSkills.filter(skill => !matchingSkills.includes(skill)),
-    total_required_skills: resumeSkills.length,
-    salary_data: { avg_salary: '$80,000 - $120,000' }
-  };
-};
 
-// Helper function for mock recommendations
-const mockRecommendations = (skillsArray) => {
-  return [
-    { title: 'Junior Developer', company: 'Tech Corp', match_score: 85 },
-    { title: 'Software Specialist', company: 'Innovation Inc', match_score: 78 },
-    { title: 'Senior Developer', company: 'Enterprise Ltd', match_score: 72 }
-  ];
-};
 
 module.exports = {
   parseResume,

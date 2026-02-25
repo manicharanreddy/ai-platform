@@ -52,19 +52,17 @@ const uploadResume = async (req, res) => {
       
       if (parsedData && parsedData.error) {
         console.error('Python script error:', parsedData.error);
-        // Use mock parser as fallback
-        parsedData = await mockParseResume(req.file.path, fileType);
+        return res.status(500).json({ error: 'Python script error: ' + parsedData.error });
       }
     } catch (pythonError) {
       console.error('Python environment error:', pythonError.message);
       console.error('Full error details:', pythonError);
-      // Fallback to mock parser if Python environment is not available
-      parsedData = await mockParseResume(req.file.path, fileType);
+      return res.status(500).json({ error: 'Python processing error: ' + pythonError.message });
     }
     
-    // Ensure parsedData is not null or undefined
+    // Check if parsedData is null or undefined
     if (!parsedData) {
-      parsedData = await mockParseResume(req.file.path, fileType);
+      return res.status(500).json({ error: 'No parsed data returned from Python script' });
     }
     
     res.json({
@@ -95,23 +93,7 @@ const getJobMatch = async (req, res) => {
       }
     } catch (pythonError) {
       console.error('Python job matching error:', pythonError.message);
-      // Fallback to mock result
-      const matchingSkills = resumeSkills.filter(skill => 
-        jobRole.toLowerCase().includes(skill.toLowerCase()) || 
-        Math.random() > 0.5
-      );
-      
-      matchResult = {
-        job_title: jobRole,
-        company: 'Sample Company',
-        location: 'Remote',
-        url: '',
-        match_score: Math.min(100, Math.round((matchingSkills.length / resumeSkills.length) * 100)),
-        matching_skills: matchingSkills,
-        missing_skills: resumeSkills.filter(skill => !matchingSkills.includes(skill)),
-        total_required_skills: resumeSkills.length,
-        salary_data: { avg_salary: '$80,000 - $120,000' }
-      };
+      return res.status(500).json({ error: 'Python job matching error: ' + pythonError.message });
     }
     
     res.json(matchResult);
@@ -134,12 +116,7 @@ const simulateCareerPath = async (req, res) => {
       recommendations = await getJobRecommendations(skillsArray);
     } catch (pythonError) {
       console.error('Python recommendations error:', pythonError.message);
-      // Fallback to mock recommendations
-      recommendations = [
-        { title: `${desiredRole} Junior`, company: 'Tech Corp', match_score: 85 },
-        { title: `${desiredRole} Specialist`, company: 'Innovation Inc', match_score: 78 },
-        { title: `${desiredRole} Senior`, company: 'Enterprise Ltd', match_score: 72 }
-      ];
+      return res.status(500).json({ error: 'Python recommendations error: ' + pythonError.message });
     }
     
     // For career path simulation, we'll still use a mock approach but with real data
