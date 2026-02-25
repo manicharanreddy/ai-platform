@@ -1,11 +1,21 @@
 const { spawn } = require('child_process');
 const path = require('path');
 
+// Function to get the correct Python executable path based on the operating system
+const getPythonPath = () => {
+  const isWindows = process.platform === 'win32';
+  const pythonPath = isWindows 
+    ? path.join(__dirname, '..', 'ai_career_env', 'Scripts', 'python.exe')
+    : path.join(__dirname, '..', 'ai_career_env', 'bin', 'python');
+  
+  return pythonPath;
+};
+
 // Function to call Python script for resume parsing
 const parseResume = (filePath, fileType) => {
   return new Promise((resolve, reject) => {
     // Path to Python executable in virtual environment
-    const pythonPath = path.join(__dirname, '..', 'ai_career_env', 'Scripts', 'python.exe');
+    const pythonPath = getPythonPath();
     
     // Path to Python script
     const scriptPath = path.join(__dirname, 'ai_career_engine.py');
@@ -43,7 +53,7 @@ const parseResume = (filePath, fileType) => {
 const matchJob = (resumeSkills, jobTitle) => {
   return new Promise((resolve, reject) => {
     // Path to Python executable in virtual environment
-    const pythonPath = path.join(__dirname, '..', 'ai_career_env', 'Scripts', 'python.exe');
+    const pythonPath = getPythonPath();
     
     // Path to Python script
     const scriptPath = path.join(__dirname, 'ai_career_engine.py');
@@ -81,7 +91,7 @@ const matchJob = (resumeSkills, jobTitle) => {
 const getJobRecommendations = (resumeSkills) => {
   return new Promise((resolve, reject) => {
     // Path to Python executable in virtual environment
-    const pythonPath = path.join(__dirname, '..', 'ai_career_env', 'Scripts', 'python.exe');
+    const pythonPath = getPythonPath();
     
     // Path to Python script
     const scriptPath = path.join(__dirname, 'ai_career_engine.py');
@@ -119,7 +129,7 @@ const getJobRecommendations = (resumeSkills) => {
 const getTrendingSkills = () => {
   return new Promise((resolve, reject) => {
     // Path to Python executable in virtual environment
-    const pythonPath = path.join(__dirname, '..', 'ai_career_env', 'Scripts', 'python.exe');
+    const pythonPath = getPythonPath();
     
     // Path to Python script
     const scriptPath = path.join(__dirname, 'ai_career_engine.py');
@@ -157,7 +167,7 @@ const getTrendingSkills = () => {
 const predictFutureSkillsML = (skillsArray) => {
   return new Promise((resolve, reject) => {
     // Path to Python executable in virtual environment
-    const pythonPath = path.join(__dirname, '..', 'ai_career_env', 'Scripts', 'python.exe');
+    const pythonPath = getPythonPath();
     
     // Path to Python script
     const scriptPath = path.join(__dirname, 'ai_career_engine.py');
@@ -195,7 +205,7 @@ const predictFutureSkillsML = (skillsArray) => {
 const predictInterviewQuestions = (resumeData) => {
   return new Promise((resolve, reject) => {
     // Path to Python executable in virtual environment
-    const pythonPath = path.join(__dirname, '..', 'ai_career_env', 'Scripts', 'python.exe');
+    const pythonPath = getPythonPath();
     
     // Path to Python script
     const scriptPath = path.join(__dirname, 'ai_career_engine.py');
@@ -233,7 +243,7 @@ const predictInterviewQuestions = (resumeData) => {
 const getAIMentorResponse = (userQuery, resumeData) => {
   return new Promise((resolve, reject) => {
     // Path to Python executable in virtual environment
-    const pythonPath = path.join(__dirname, '..', 'ai_career_env', 'Scripts', 'python.exe');
+    const pythonPath = getPythonPath();
     
     // Path to Python script
     const scriptPath = path.join(__dirname, 'ai_career_engine.py');

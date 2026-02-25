@@ -24,8 +24,22 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 // Middleware
 app.use((req, res, next) => {
-  // Set CORS headers to allow all origins during production
-  res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all origins
+  // Set CORS headers to allow specific origins
+  const allowedOrigins = [
+    'https://ai-platform-bi5c-lh5hilnxt-rmanicharanreddy-9133s-projects.vercel.app', 
+    'https://ai-platform-bi5c.vercel.app',
+    'http://localhost:3000', 
+    'http://localhost:3001'
+  ];
+  const origin = req.headers.origin;
+  
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  } else {
+    // Default to production domain if origin is not in allowed list
+    res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all origins as fallback
+  }
+  
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
