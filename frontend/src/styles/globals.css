@@ -555,9 +555,118 @@ input:focus, select:focus, textarea:focus {
   animation: spin 1s ease-in-out infinite;
 }
 
-/* Mobile-specific improvements */
+/* Comprehensive responsive design for all devices */
+@media (max-width: 1200px) {
+  /* Large tablet and small desktop adjustments */
+  .tool-page {
+    max-width: 95%;
+    padding: 15px;
+  }
+  
+  .main-content {
+    padding: 15px;
+  }
+  
+  .sidebar {
+    width: 250px;
+  }
+  
+  .main-content.with-sidebar {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+  }
+}
+
+@media (max-width: 992px) {
+  /* Medium devices */
+  .tool-page {
+    max-width: 90%;
+    padding: 12px;
+  }
+  
+  .main-content {
+    padding: 12px;
+  }
+  
+  .tool-header h1 {
+    font-size: 2rem;
+  }
+  
+  .tool-header p {
+    font-size: 1.05rem;
+  }
+  
+  .sidebar {
+    width: 200px;
+  }
+  
+  .main-content.with-sidebar {
+    margin-left: 200px;
+    width: calc(100% - 200px);
+  }
+}
+
 @media (max-width: 768px) {
-  /* Ensure proper touch targets */
+  /* Tablets and small screens */
+  .tool-page {
+    max-width: 100%;
+    padding: 10px;
+  }
+  
+  .main-content {
+    padding: 10px;
+  }
+  
+  .main-content.with-sidebar {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+  }
+  
+  .tool-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .tool-header p {
+    font-size: 1rem;
+  }
+  
+  .sidebar {
+    width: 80px;
+  }
+  
+  .sidebar-header h2,
+  .sidebar-text,
+  .user-details span:not(.user-name),
+  .logout-button span {
+    display: none;
+  }
+  
+  .sidebar-icon {
+    margin-right: 0;
+    font-size: 1.7rem;
+  }
+  
+  .sidebar-link {
+    justify-content: center;
+    padding: 25px 0;
+  }
+  
+  .user-info {
+    justify-content: center;
+    margin-bottom: 15px;
+  }
+  
+  .user-avatar {
+    margin-right: 0;
+    width: 50px;
+    height: 50px;
+  }
+  
+  .sidebar-user {
+    padding: 20px 15px;
+  }
+  
+  /* Touch targets for tablets */
   button, 
   .btn, 
   input[type="button"], 
@@ -570,14 +679,13 @@ input:focus, select:focus, textarea:focus {
     padding: 12px 16px;
   }
   
-  /* Improve form inputs on mobile */
+  /* Form inputs */
   input, textarea, select {
-    font-size: 16px; /* Prevents zoom on iOS */
+    font-size: 16px;
     padding: 12px;
     min-height: 44px;
   }
   
-  /* Better spacing for mobile */
   .form-group {
     margin-bottom: 20px;
   }
@@ -587,7 +695,6 @@ input:focus, select:focus, textarea:focus {
     font-size: 1rem;
   }
   
-  /* Mobile-friendly navigation */
   .main-nav ul {
     padding: 10px;
   }
@@ -604,7 +711,79 @@ input:focus, select:focus, textarea:focus {
 }
 
 @media (max-width: 480px) {
-  /* Even more compact for small screens */
+  /* Mobile phones */
+  .main-content.with-sidebar {
+    margin-left: 0;
+    width: 100%;
+  }
+  
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  
+  .sidebar-nav {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  .sidebar-link {
+    padding: 15px;
+    border-radius: 10px;
+    margin: 5px 10px;
+  }
+  
+  .sidebar-icon {
+    font-size: 1.3rem;
+  }
+  
+  .sidebar-text {
+    display: inline;
+    font-size: 0.9rem;
+  }
+  
+  .user-info {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .user-avatar {
+    width: 60px;
+    height: 60px;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+  
+  .tool-header {
+    padding: 15px;
+  }
+  
+  .tool-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .tool-page {
+    padding: 8px;
+  }
+  
+  .tool-card {
+    padding: 15px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .auth-form {
+    padding: 20px;
+  }
+  
+  .profile-content {
+    padding: 20px;
+  }
+  
+  /* Compact touch targets for small screens */
   button, 
   .btn, 
   input[type="button"], 
@@ -623,21 +802,15 @@ input:focus, select:focus, textarea:focus {
     min-height: 36px;
   }
   
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
   .form-group label {
     font-size: 0.9rem;
   }
   
-  /* Prevent horizontal scrolling */
   body {
     overflow-x: hidden;
     -webkit-text-size-adjust: 100%;
   }
   
-  /* Mobile-specific typography */
   h1 {
     font-size: 1.8rem;
   }
@@ -650,9 +823,88 @@ input:focus, select:focus, textarea:focus {
     font-size: 1.3rem;
   }
   
-  /* Improve readability on small screens */
   p, li, td, th {
     font-size: 0.95rem;
     line-height: 1.5;
+  }
+}
+
+@media (max-width: 320px) {
+  /* Very small screens */
+  .tool-header h1 {
+    font-size: 1.3rem;
+  }
+  
+  .tool-header {
+    padding: 12px;
+  }
+  
+  .tool-page {
+    padding: 5px;
+  }
+  
+  .tool-card {
+    padding: 12px;
+  }
+  
+  button, .btn {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+  
+  .form-group {
+    margin-bottom: 12px;
+  }
+  
+  input, textarea, select {
+    padding: 8px;
+    font-size: 14px;
+  }
+}
+
+/* Desktop large screen optimizations */
+@media (min-width: 1400px) {
+  .tool-page {
+    max-width: 1400px;
+  }
+  
+  .main-content {
+    padding: 30px;
+  }
+  
+  .tool-header h1 {
+    font-size: 2.5rem;
+  }
+  
+  .sidebar {
+    width: 320px;
+  }
+  
+  .main-content.with-sidebar {
+    margin-left: 320px;
+    width: calc(100% - 320px);
+  }
+}
+
+/* Landscape mobile support */
+@media (max-height: 500px) and (orientation: landscape) {
+  .sidebar {
+    height: 100vh;
+  }
+  
+  .sidebar-nav {
+    max-height: 60vh;
+  }
+  
+  .sidebar-header {
+    padding: 15px;
+  }
+  
+  .sidebar-header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .sidebar-user {
+    padding: 15px;
   }
 }
