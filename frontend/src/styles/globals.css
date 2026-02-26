@@ -82,6 +82,53 @@ body.dark-mode .app-layout {
     margin-left: 80px;
     width: calc(100% - 80px);
   }
+  
+  .tool-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .tool-header p {
+    font-size: 1rem;
+  }
+  
+  .tool-page {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content.with-sidebar {
+    margin-left: 0;
+    width: 100%;
+  }
+  
+  .tool-header {
+    padding: 15px;
+  }
+  
+  .tool-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .tool-page {
+    padding: 10px;
+  }
+  
+  .tool-card {
+    padding: 15px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .auth-form {
+    padding: 20px;
+  }
+  
+  .profile-content {
+    padding: 20px;
+  }
 }
 
 /* Floating shapes */
@@ -506,4 +553,106 @@ input:focus, select:focus, textarea:focus {
   border-radius: 50%;
   border-top-color: white;
   animation: spin 1s ease-in-out infinite;
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 768px) {
+  /* Ensure proper touch targets */
+  button, 
+  .btn, 
+  input[type="button"], 
+  input[type="submit"], 
+  input[type="reset"],
+  select,
+  a.button {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 12px 16px;
+  }
+  
+  /* Improve form inputs on mobile */
+  input, textarea, select {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 12px;
+    min-height: 44px;
+  }
+  
+  /* Better spacing for mobile */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    margin-bottom: 8px;
+    font-size: 1rem;
+  }
+  
+  /* Mobile-friendly navigation */
+  .main-nav ul {
+    padding: 10px;
+  }
+  
+  .main-nav li {
+    margin: 5px 0;
+  }
+  
+  .main-nav button {
+    width: 100%;
+    text-align: left;
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Even more compact for small screens */
+  button, 
+  .btn, 
+  input[type="button"], 
+  input[type="submit"], 
+  input[type="reset"],
+  select,
+  a.button {
+    min-height: 36px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+  
+  input, textarea, select {
+    font-size: 16px;
+    padding: 10px;
+    min-height: 36px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    font-size: 0.9rem;
+  }
+  
+  /* Prevent horizontal scrolling */
+  body {
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+  }
+  
+  /* Mobile-specific typography */
+  h1 {
+    font-size: 1.8rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  h3 {
+    font-size: 1.3rem;
+  }
+  
+  /* Improve readability on small screens */
+  p, li, td, th {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
 }
