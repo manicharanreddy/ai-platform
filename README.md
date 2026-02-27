@@ -2,6 +2,24 @@
 
 An AI-powered career development platform that helps users optimize their resumes, find suitable job roles, and plan their career paths.
 
+## Environment Setup
+
+Before running the application, you need to set up environment variables:
+
+1. Copy the example environment files:
+   ```bash
+   cp backend/.env.example backend/.env
+   cp frontend/.env.example frontend/.env
+   ```
+
+2. Update the `.env` files with your actual credentials:
+   - MongoDB connection string
+   - Google OAuth credentials
+   - API keys for AI services
+   - Other required environment variables
+
+**Important**: Never commit your actual `.env` files to version control. The `.gitignore` file is configured to exclude them.
+
 ## Features
 
 1. **Resume Upload & Parsing**
