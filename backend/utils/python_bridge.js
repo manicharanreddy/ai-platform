@@ -15,11 +15,15 @@ const getPythonPath = () => {
   }
   
   const isWindows = process.platform === 'win32';
-  const pythonPath = isWindows 
-    ? path.join(__dirname, '..', 'ai_career_env', 'Scripts', 'python.exe')
-    : path.join(__dirname, '..', 'ai_career_env', 'bin', 'python');
   
-  return pythonPath;
+  // Use system Python directly
+  if (isWindows) {
+    // On Windows, use the full path to system Python
+    return 'C:\\Users\\rachu\\AppData\\Local\\Programs\\Python\\Python313\\python.exe';
+  } else {
+    // On Unix-like systems, use python3
+    return 'python3';
+  }
 };
 
 // Function to call Python script for resume parsing
