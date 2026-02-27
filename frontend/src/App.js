@@ -15,6 +15,7 @@ import PortfolioGenerator from './components/PortfolioGenerator';
 import InterviewPractice from './components/InterviewPractice';
 import AIMentorChat from './components/AIMentorChat';
 import Profile from './pages/Profile';
+import AuthCallbackHandler from './components/AuthCallbackHandler';
 import './styles/globals.css';
 import './styles/App.css';
 
@@ -114,14 +115,16 @@ function App() {
   const updateUser = (userData) => {
     setUser(userData);
   };
-
+  
   return (
     <div className="App">
       <ThemeToggle />
+      <AuthCallbackHandler updateUser={updateUser} />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login updateUser={updateUser} />} />
         <Route path="/register" element={<Register updateUser={updateUser} />} />
+        <Route path="/auth/callback" element={<div />} />
         <Route path="/dashboard" element={isAuthenticated() ? (
           <div className="app-layout">
             <Sidebar user={user} onLogout={handleLogout} />
@@ -143,7 +146,7 @@ function App() {
             <Sidebar user={user} onLogout={handleLogout} />
             <main className="main-content with-sidebar">
               <div className="tool-page">
-                
+                  
                 <ResumeUpload onUploadSuccess={handleUploadSuccess} />
               </div>
             </main>
@@ -154,7 +157,7 @@ function App() {
             <Sidebar user={user} onLogout={handleLogout} />
             <main className="main-content with-sidebar">
               <div className="tool-page">
-               
+                  
                 <JobMatching resumeSkills={resumeSkills} />
               </div>
             </main>
@@ -165,7 +168,7 @@ function App() {
             <Sidebar user={user} onLogout={handleLogout} />
             <main className="main-content with-sidebar">
               <div className="tool-page">
-                
+                  
                 <CareerPathSimulator resumeSkills={resumeSkills} />
               </div>
             </main>
@@ -176,7 +179,7 @@ function App() {
             <Sidebar user={user} onLogout={handleLogout} />
             <main className="main-content with-sidebar">
               <div className="tool-page">
-                
+                  
                 <FutureSkillPredictor resumeSkills={resumeSkills} />
               </div>
             </main>
@@ -187,7 +190,7 @@ function App() {
             <Sidebar user={user} onLogout={handleLogout} />
             <main className="main-content with-sidebar">
               <div className="tool-page">
-               
+                  
                 <BiasChecker />
               </div>
             </main>
@@ -198,7 +201,7 @@ function App() {
             <Sidebar user={user} onLogout={handleLogout} />
             <main className="main-content with-sidebar">
               <div className="tool-page">
-                
+                  
                 <PortfolioGenerator resumeData={resumeData} />
               </div>
             </main>

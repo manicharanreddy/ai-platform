@@ -8,8 +8,7 @@
   transition: var(--transition);
   position: relative;
   overflow: hidden;
-  margin-left:100px;
-  margin-top:100px;
+ 
 }
 
 .job-matching-bg {

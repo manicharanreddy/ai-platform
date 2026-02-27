@@ -18,7 +18,7 @@ const mockParseResume = (filePath, fileType) => {
         education: "Bachelor's degree in Computer Science",
         projects: "Developed multiple full-stack applications using modern technologies."
       });
-    }, 500); // Simulate processing time
+    }, 1000); // Simulate processing time
   });
 };
 

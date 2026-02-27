@@ -8,6 +8,65 @@ const generateToken = (userId) => {
   });
 };
 
+// Google OAuth callback handler
+const googleOAuthCallback = async (req, res) => {
+  try {
+    const { user } = req;
+    
+    if (!user) {
+      return res.status(400).json({ message: 'Google authentication failed' });
+    }
+    
+    // Check if user already exists with googleId
+    let dbUser = await User.findOne({ googleId: user.googleId });
+    
+    if (dbUser) {
+      // User already exists via Google OAuth
+      const token = generateToken(dbUser._id);
+      return res.redirect(`${process.env.CLIENT_URL}/auth/callback?token=${token}&name=${encodeURIComponent(dbUser.name)}&email=${encodeURIComponent(dbUser.email)}`);
+    }
+    
+    // Check if user exists with the same email but registered differently
+    dbUser = await User.findOne({ email: user.email });
+    
+    if (dbUser) {
+      // Link Google account to existing user
+      dbUser.googleId = user.googleId;
+      dbUser.isGoogleUser = true;
+      await dbUser.save();
+      
+      const token = generateToken(dbUser._id);
+      return res.redirect(`${process.env.CLIENT_URL}/auth/callback?token=${token}&name=${encodeURIComponent(dbUser.name)}&email=${encodeURIComponent(dbUser.email)}`);
+    }
+    
+    // Create new user
+    dbUser = await User.create({
+      name: user.displayName,
+      email: user.email,
+      googleId: user.googleId,
+      isGoogleUser: true
+    });
+    
+    const token = generateToken(dbUser._id);
+    res.redirect(`${process.env.CLIENT_URL}/auth/callback?token=${token}&name=${encodeURIComponent(dbUser.name)}&email=${encodeURIComponent(dbUser.email)}`);
+    
+  } catch (error) {
+    console.error('Google OAuth error:', error);
+    res.status(500).json({ message: 'Google authentication failed' });
+  }
+};
+
+// Handle auth callback
+const handleAuthCallback = async (req, res) => {
+  try {
+    // This endpoint will be called from frontend after successful redirect
+    // The token is passed as query param, frontend will handle storing it
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Register user
 const registerUser = async (req, res) => {
   try {
@@ -79,5 +138,7 @@ const getUserProfile = async (req, res) => {
 module.exports = {
   registerUser,
   loginUser,
-  getUserProfile
+  getUserProfile,
+  googleOAuthCallback,
+  handleAuthCallback
 };

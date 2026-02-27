@@ -71,6 +71,12 @@ const Login = ({ updateUser }) => {
     }
   };
 
+  // Google OAuth login handler
+  const handleGoogleLogin = () => {
+    // Redirect to backend Google OAuth endpoint
+    window.location.href = `${config.baseURL}/auth/google`;
+  };
+
   return (
     <div className="auth-container">
       <div className="auth-form">
@@ -120,6 +126,21 @@ const Login = ({ updateUser }) => {
             Login
           </button>
         </form>
+
+        {/* Google OAuth Button */}
+        <div className="oauth-section">
+          <div className="divider">
+            <span>or</span>
+          </div>
+          <button
+            type="button"
+            className="google-login-button"
+            onClick={handleGoogleLogin}
+          >
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google logo" width="20" height="20" />
+            Sign in with Google
+          </button>
+        </div>
 
         <div className="auth-footer">
           <p>

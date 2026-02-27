@@ -175,6 +175,24 @@ const Register = ({ updateUser }) => {
           </button>
         </form>
 
+        {/* Google OAuth Button */}
+        <div className="oauth-section">
+          <div className="divider">
+            <span>or</span>
+          </div>
+          <button
+            type="button"
+            className="google-login-button"
+            onClick={() => {
+              // Redirect to backend Google OAuth endpoint
+              window.location.href = `${config.baseURL}/auth/google`;
+            }}
+          >
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google logo" width="20" height="20" />
+            Sign up with Google
+          </button>
+        </div>
+
         <div className="auth-footer">
           <p>Already have an account?
             <button onClick={() => navigate('/login')} className="link-button">
