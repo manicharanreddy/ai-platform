@@ -1,6 +1,16 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
+// Get the correct frontend URL based on environment
+const getFrontendUrl = () => {
+  // In development, use FRONTEND_URL
+  // In production, use CLIENT_URL
+  if (process.env.NODE_ENV === 'production') {
+    return process.env.CLIENT_URL;
+  }
+  return process.env.FRONTEND_URL || process.env.CLIENT_URL;
+};
+
 // Generate JWT token
 const generateToken = (userId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
@@ -12,6 +22,7 @@ const generateToken = (userId) => {
 const googleOAuthCallback = async (req, res) => {
   try {
     const { user } = req;
+    const frontendUrl = getFrontendUrl();
     
     if (!user) {
       return res.status(400).json({ message: 'Google authentication failed' });
@@ -23,7 +34,7 @@ const googleOAuthCallback = async (req, res) => {
     if (dbUser) {
       // User already exists via Google OAuth
       const token = generateToken(dbUser._id);
-      return res.redirect(`${process.env.CLIENT_URL}/auth/callback?token=${token}&name=${encodeURIComponent(dbUser.name)}&email=${encodeURIComponent(dbUser.email)}`);
+      return res.redirect(`${frontendUrl}/auth/callback?token=${token}&name=${encodeURIComponent(dbUser.name)}&email=${encodeURIComponent(dbUser.email)}`);
     }
     
     // Check if user exists with the same email but registered differently
@@ -36,7 +47,7 @@ const googleOAuthCallback = async (req, res) => {
       await dbUser.save();
       
       const token = generateToken(dbUser._id);
-      return res.redirect(`${process.env.CLIENT_URL}/auth/callback?token=${token}&name=${encodeURIComponent(dbUser.name)}&email=${encodeURIComponent(dbUser.email)}`);
+      return res.redirect(`${frontendUrl}/auth/callback?token=${token}&name=${encodeURIComponent(dbUser.name)}&email=${encodeURIComponent(dbUser.email)}`);
     }
     
     // Create new user
@@ -48,7 +59,7 @@ const googleOAuthCallback = async (req, res) => {
     });
     
     const token = generateToken(dbUser._id);
-    res.redirect(`${process.env.CLIENT_URL}/auth/callback?token=${token}&name=${encodeURIComponent(dbUser.name)}&email=${encodeURIComponent(dbUser.email)}`);
+    res.redirect(`${frontendUrl}/auth/callback?token=${token}&name=${encodeURIComponent(dbUser.name)}&email=${encodeURIComponent(dbUser.email)}`);
     
   } catch (error) {
     console.error('Google OAuth error:', error);

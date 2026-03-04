@@ -10,7 +10,11 @@ router.get('/google',
 );
 
 router.get('/google/callback',
-  passport.authenticate('google', { failureRedirect: `${process.env.CLIENT_URL}/login` }),
+  passport.authenticate('google', { 
+    failureRedirect: process.env.NODE_ENV === 'production' 
+      ? `${process.env.CLIENT_URL}/login` 
+      : `${process.env.FRONTEND_URL || process.env.CLIENT_URL}/login`
+  }),
   googleOAuthCallback
 );
 
