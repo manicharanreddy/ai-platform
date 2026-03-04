@@ -8,10 +8,10 @@
       }
     }
   ],
-  // Rewrite all paths back to index.html so the React router can handle them
+ 
   "rewrites": [
     {
-      "source": "\/(.*)",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
