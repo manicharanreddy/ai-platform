@@ -21,10 +21,10 @@ const userSchema = new mongoose.Schema({
     minlength: 6
   },
   googleId: {
-    type: String,
-    required: false,
-    unique: true
-  },
+  type: String,
+  unique: true,
+  sparse: true
+},
   isGoogleUser: {
     type: Boolean,
     default: false
